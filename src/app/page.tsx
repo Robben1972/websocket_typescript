@@ -5,7 +5,7 @@ import Image from "next/image";
 import { ChangeEvent, useEffect, useState } from "react";
 import { io ,Socket } from "socket.io-client";
 import LoginPage from "./Components/LoginPage";
-import HomePage from "./Components/homePage";
+import HomePage from "./Components/HomePage";
 
 export default function Home() {
   const [socket, setSocket] = useState<Socket>();
