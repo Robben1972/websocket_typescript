@@ -9,15 +9,25 @@ import HomePage from "./Components/homePage";
 
 export default function Home() {
   const [socket, setSocket] = useState<Socket>();
-  const [name, setName] = useState<string>();
+  const [name, setName] = useState<string>('');
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  
+  
+  const loginHandler = () => {
+    if(name){
+      setIsLoggedIn(true);
+    }
+  }
 
   const inputNameHandler = (e: ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value);
   }
 
   useEffect(() => {
-    setSocket(io("http://localhost:3001"));
-  },[]);
+    if(isLoggedIn){
+      setSocket(io("http://localhost:3001"));
+    }
+  },[isLoggedIn]);
 
   useEffect(() => {
     socket?.on('notify', (data) => {
@@ -26,8 +36,9 @@ export default function Home() {
     })
   }, [socket]);
 
-  return <div className="grid place-items-center h-dvh">
-    <LoginPage inputNameHandler={inputNameHandler}/>
-    <HomePage/>
+  return (
+  <div className="grid place-items-center h-dvh">
+    {isLoggedIn? (<HomePage/>) : (<LoginPage inputNameHandler={inputNameHandler} loginHandler={loginHandler}/>)}
   </div>
+  )
 }
