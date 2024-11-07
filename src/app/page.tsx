@@ -36,9 +36,15 @@ export default function Home() {
     })
   }, [socket]);
 
+  useEffect(() => {
+    if (socket){
+      socket.emit('joinUser', {userName: name})
+    }
+  }, [socket, name])
+
   return (
   <div className="grid place-items-center h-dvh">
-    {isLoggedIn? (<HomePage/>) : (<LoginPage inputNameHandler={inputNameHandler} loginHandler={loginHandler}/>)}
+    {isLoggedIn? (<HomePage socket={socket} name={name}/>) : (<LoginPage inputNameHandler={inputNameHandler} loginHandler={loginHandler}/>)}
   </div>
   )
 }
